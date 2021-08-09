@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'rea
 
 export default function App() {
   //const [Quiry, setQuiry] = useState(0)
-  const [commodity, setCommodity] = useState('')
+  const [commodity, setCommodity] = useState('') // 這邊你原本寫 0，但 TextInput 預設只能放文字不能放數字，所以我先幫你改成空字串，避免出現 warning
   const [commodity1, setCommodity1] = useState('')
   const [botton1, setBotton1] = useState("查無資料")
   const changeQuiry = (text) => {
