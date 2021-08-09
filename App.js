@@ -1,15 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
 
 export default function App() {
   //const [Quiry, setQuiry] = useState(0)
-  const [commodity, setCommodity] = useState(0)
-  const [commodity1, setCommodity1] = useState(0)
+  const [commodity, setCommodity] = useState('') // 這邊你原本寫 0，但 TextInput 預設只能放文字不能放數字，所以我先幫你改成空字串，避免出現 warning
+  const [commodity1, setCommodity1] = useState('')
   const [botton1, setBotton1] = useState("查無資料")
   const changeQuiry = (text) => {
     setCommodity(text)
   }
+
+
+
+  //////////////////////////////
+  // 這個區塊內是我新增的程式碼 //
+  //////////////////////////////
+
+  // useRef 的功能: 當你把 useRef 的回傳值 (假設把回傳值命名為buttonRef) 丟給一個元件作為它的 ref 屬性後
+  // 呼叫 buttonRef.current 就能夠呼叫那個元件。 注意不能只呼叫 buttonRef 喔，這是它規定的用法沒有為什麼
+
+  const input2Ref = useRef() // 所以這裡我令一個 useRef 的回傳值，名為 input2Ref，代表的是第二個輸入格的 ref
+
+  // 在第二個 TextInput 元件中，你會看到我添加了一個 ref 屬性，並把 input2Ref 傳入
+  // 於是該元件便有了名字: input2Ref.current
+
+  // 定義當第一個 TextInput 接收到 enter 的訊號時所要執行的函式
+  const onInput1Submit = () => {
+    // 我們想要使用 TextInput 元件自帶的 focus() 函式
+    // 所以我們先呼叫 input2Ref.current，再加上.focus()
+    // 就可以 focus 在第二個輸入格上
+    input2Ref.current.focus()
+  }
+
+  //////////////////////////////
+  // 這個區塊內是我新增的程式碼 //
+  //////////////////////////////
+
+
+
 
   // const Quiry = () => {
   //   if (commodity === '123') {
@@ -42,10 +71,11 @@ export default function App() {
         // editable={true}
         autoFocus={true}
         onBlur={() => Quiry2()}
-        onSubmitEditing={(event) => { this.refs.passcode2.focus() }}
+        onSubmitEditing={onInput1Submit} // 當 submit(按下Enter)的時候，執行 onInput1Submit 這個函式
       />
       <TextInput
-        refs={(input) => { this.secondTextInput = input; }}
+        // refs={(input) => { this.secondTextInput = input; }} // 你原本打的 refs 是錯字
+        ref={input2Ref} // 在這傳入 input2Ref
         style={styles.text1}
         value={commodity1}
         maxLength={4}
